@@ -41,18 +41,20 @@ contract Wallet is
   }
 
   function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpHash) internal view override returns(uint256) {
-    bytes32 hash = userOpHash.toEthSignedMessageHash();
-
     bytes[] memory signatures = abi.decode(userOp.signature, (bytes[]));
 
-    for(uint256 i=0; i<owners.length; i++) {
-      if(owners[i] != hash.recover(signatures[i])) {
-        return SIG_VALIDATION_FAILED;
-      }
+    for(uint256 i = 0; i < owners.length; i++) {
+        bytes32 messageHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", userOpHash));
+        address signer = ECDSA.recover(messageHash, signatures[i]);
+        if(owners[i] != signer) {
+            return 1;
+        }
     }
 
     return 0;
   }
+
+
 
   function initialize(address[] memory initialOwners) public initializer {
     _initialize(initialOwners);

@@ -5,12 +5,12 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Pinnie is ERC721, ERC721URIStorage, Ownable {
+contract Profile is ERC721, ERC721URIStorage, Ownable {
     uint256 public _tokenId;
     string private _baseTokenURI;
 
     constructor(string memory baseURI)
-        ERC721("Pinnie", "PIN")
+        ERC721("Profile", "PRF")
         Ownable(msg.sender)
     {
         _baseTokenURI = baseURI;
